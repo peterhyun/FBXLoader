@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		33BE457422ACF5BE00AB7A78 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33BE457322ACF5BE00AB7A78 /* main.cpp */; };
+		33BE459C22AD5B6500AB7A78 /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE459422AD112F00AB7A78 /* libfbxsdk.dylib */; };
+		33BE459D22AD5B7700AB7A78 /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE459622AD114A00AB7A78 /* libfbxsdk.dylib */; };
+		33BE45A422AF9E8100AB7A78 /* FBXModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33BE45A222AF9E8100AB7A78 /* FBXModel.cpp */; };
+		33BE45AA22AFA66500AB7A78 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE45A922AFA66500AB7A78 /* libglfw.3.3.dylib */; };
+		33BE45C422AFBE4000AB7A78 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 33BE45C322AFBE4000AB7A78 /* glad.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +30,32 @@
 /* Begin PBXFileReference section */
 		33BE457022ACF5BE00AB7A78 /* FBXLoader */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FBXLoader; sourceTree = BUILT_PRODUCTS_DIR; };
 		33BE457322ACF5BE00AB7A78 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		33BE457B22ACFB7100AB7A78 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/release/libfbxsdk.dylib; sourceTree = "<group>"; };
+		33BE457D22ACFE7B00AB7A78 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/libstdcpp/debug/libfbxsdk.dylib; sourceTree = "<group>"; };
+		33BE457E22ACFE7B00AB7A78 /* libfbxsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfbxsdk.a; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/libstdcpp/debug/libfbxsdk.a; sourceTree = "<group>"; };
+		33BE458122ACFE9100AB7A78 /* libfbxsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfbxsdk.a; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/libstdcpp/release/libfbxsdk.a; sourceTree = "<group>"; };
+		33BE458222ACFE9100AB7A78 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/libstdcpp/release/libfbxsdk.dylib; sourceTree = "<group>"; };
+		33BE458522ACFEEE00AB7A78 /* libfbxsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfbxsdk.a; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/debug/libfbxsdk.a; sourceTree = "<group>"; };
+		33BE458622ACFEEE00AB7A78 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/debug/libfbxsdk.dylib; sourceTree = "<group>"; };
+		33BE458E22ACFF0000AB7A78 /* libfbxsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfbxsdk.a; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/release/libfbxsdk.a; sourceTree = "<group>"; };
+		33BE459022AD0CEC00AB7A78 /* Autodesk */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Autodesk; path = ../../../../Applications/Autodesk; sourceTree = "<group>"; };
+		33BE459422AD112F00AB7A78 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../Applications/Autodesk/FBX SDK/2019.2/lib/clang/debug/libfbxsdk.dylib"; sourceTree = "<group>"; };
+		33BE459622AD114A00AB7A78 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = "../../../../Applications/Autodesk/FBX SDK/2019.2/lib/clang/release/libfbxsdk.dylib"; sourceTree = "<group>"; };
+		33BE459A22AD5B4A00AB7A78 /* Applications */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Applications; path = ../../Applications; sourceTree = "<group>"; };
+		33BE45A222AF9E8100AB7A78 /* FBXModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FBXModel.cpp; sourceTree = "<group>"; };
+		33BE45A322AF9E8100AB7A78 /* FBXModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBXModel.h; sourceTree = "<group>"; };
+		33BE45A622AFA5E000AB7A78 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		33BE45A722AFA5E000AB7A78 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
+		33BE45A922AFA66500AB7A78 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../usr/local/Cellar/glfw/3.3/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
+		33BE45C322AFBE4000AB7A78 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
+		33BE45C522AFBEBC00AB7A78 /* model_loading_fs.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_loading_fs.txt; sourceTree = "<group>"; };
+		33BE45C622AFBEBC00AB7A78 /* model_loading_vs.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_loading_vs.txt; sourceTree = "<group>"; };
+		33BE45C722AFD8BC00AB7A78 /* zombiegirl_TPose.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = zombiegirl_TPose.fbx; sourceTree = "<group>"; };
+		33BE45C822AFD8BC00AB7A78 /* ZombieGirlWithMotion.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = ZombieGirlWithMotion.fbx; sourceTree = "<group>"; };
+		33D8D6AF22B53D4900561C50 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		33D8D6B022B53DA000561C50 /* zombiegirl_TPose.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = zombiegirl_TPose.fbm; sourceTree = "<group>"; };
+		33D8D6B122B53DA000561C50 /* Pirate.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Pirate.fbx; sourceTree = "<group>"; };
+		33D8D6B222B53DA000561C50 /* Pirate.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pirate.fbm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +63,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33BE45AA22AFA66500AB7A78 /* libglfw.3.3.dylib in Frameworks */,
+				33BE459D22AD5B7700AB7A78 /* libfbxsdk.dylib in Frameworks */,
+				33BE459C22AD5B6500AB7A78 /* libfbxsdk.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +77,7 @@
 			children = (
 				33BE457222ACF5BE00AB7A78 /* FBXLoader */,
 				33BE457122ACF5BE00AB7A78 /* Products */,
+				33BE457A22ACFB7100AB7A78 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +92,42 @@
 		33BE457222ACF5BE00AB7A78 /* FBXLoader */ = {
 			isa = PBXGroup;
 			children = (
+				33D8D6B222B53DA000561C50 /* Pirate.fbm */,
+				33D8D6B122B53DA000561C50 /* Pirate.fbx */,
+				33D8D6B022B53DA000561C50 /* zombiegirl_TPose.fbm */,
+				33BE45C722AFD8BC00AB7A78 /* zombiegirl_TPose.fbx */,
+				33BE45C822AFD8BC00AB7A78 /* ZombieGirlWithMotion.fbx */,
+				33BE45C522AFBEBC00AB7A78 /* model_loading_fs.txt */,
+				33BE45C622AFBEBC00AB7A78 /* model_loading_vs.txt */,
+				33BE45C322AFBE4000AB7A78 /* glad.c */,
+				33BE45A622AFA5E000AB7A78 /* Camera.h */,
+				33BE45A722AFA5E000AB7A78 /* Shader.h */,
 				33BE457322ACF5BE00AB7A78 /* main.cpp */,
+				33BE45A222AF9E8100AB7A78 /* FBXModel.cpp */,
+				33BE45A322AF9E8100AB7A78 /* FBXModel.h */,
+				33D8D6AF22B53D4900561C50 /* stb_image.h */,
 			);
 			path = FBXLoader;
+			sourceTree = "<group>";
+		};
+		33BE457A22ACFB7100AB7A78 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				33BE45A922AFA66500AB7A78 /* libglfw.3.3.dylib */,
+				33BE459A22AD5B4A00AB7A78 /* Applications */,
+				33BE459422AD112F00AB7A78 /* libfbxsdk.dylib */,
+				33BE459622AD114A00AB7A78 /* libfbxsdk.dylib */,
+				33BE459022AD0CEC00AB7A78 /* Autodesk */,
+				33BE458522ACFEEE00AB7A78 /* libfbxsdk.a */,
+				33BE458E22ACFF0000AB7A78 /* libfbxsdk.a */,
+				33BE458622ACFEEE00AB7A78 /* libfbxsdk.dylib */,
+				33BE458122ACFE9100AB7A78 /* libfbxsdk.a */,
+				33BE458222ACFE9100AB7A78 /* libfbxsdk.dylib */,
+				33BE457E22ACFE7B00AB7A78 /* libfbxsdk.a */,
+				33BE457D22ACFE7B00AB7A78 /* libfbxsdk.dylib */,
+				33BE457B22ACFB7100AB7A78 /* libfbxsdk.dylib */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,7 +186,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33BE45A422AF9E8100AB7A78 /* FBXModel.cpp in Sources */,
 				33BE457422ACF5BE00AB7A78 /* main.cpp in Sources */,
+				33BE45C422AFBE4000AB7A78 /* glad.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +310,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"'/Applications/Autodesk/FBX SDK/2019.2/include'",
+					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"'/Applications/Autodesk/FBX SDK/2019.2/lib/clang/debug'",
+					"'/Applications/Autodesk/FBX SDK/2019.2/lib/clang/release'",
+					/usr/local/Cellar/glfw/3.3/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -248,6 +327,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"'/Applications/Autodesk/FBX SDK/2019.2/include'",
+					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"'/Applications/Autodesk/FBX SDK/2019.2/lib/clang/debug'",
+					"'/Applications/Autodesk/FBX SDK/2019.2/lib/clang/release'",
+					/usr/local/Cellar/glfw/3.3/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
