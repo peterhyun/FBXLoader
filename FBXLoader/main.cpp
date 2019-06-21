@@ -1,18 +1,5 @@
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include "FBXModel.h"
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include "Shader.h"
 #include "Camera.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -90,66 +77,10 @@ int main(int argc, char** argv) {
     // -------------------------
     Shader ourShader("model_loading_vs.txt", "model_loading_fs.txt");
     
-    const char* fileName = "ShovedSpin.fbx";
-    std::vector<Vertex> vertices;
-    FBXModel fbxmodel(fileName, &vertices);
-    std::cout << "These are the bindposeinverse" << std::endl;
-    for(int i = 0;i<fbxmodel.rig.Joints.size();i++){
-        std::cout << glm::to_string(fbxmodel.rig.Joints[i].globalBindPoseInverse) << std::endl;
-    }
-    fbxmodel.SetJointIndices_Weights(ourShader);
+    const char* fileName = "Defeated.fbx";
+    FBXModel fbxmodel(fileName);
     
-    unsigned int VAO, VBO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    //glGenBuffers(1, &EBO);
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, out_indices.size()*sizeof(unsigned int), &out_indices[0], GL_STATIC_DRAW);
-    
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)0);
-    //std::cout << offsetof(Vertex, normal) << std::endl;
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, normal));
-    //std::cout << offsetof(Vertex, UV) << std::endl;
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, UV));
-    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, jointIndices));
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, jointIndices2));
-    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, weights));
-    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, weights2));
-    
-    
-    
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-    glEnableVertexAttribArray(3);
-    glEnableVertexAttribArray(4);
-    glEnableVertexAttribArray(5);
-    glEnableVertexAttribArray(6);
-    glBindVertexArray(0);
-    
-    //Now generate textures
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    int width, height, nrChannels;
-    stbi_set_flip_vertically_on_load(true);
-    unsigned char * data = stbi_load("./ShovedSpin.fbm/Mutant_diffuse.png", &width, &height, &nrChannels, 4);
-    if(data){
-        std::cout << "Loaded texture!" << std::endl;
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        stbi_image_free(data);
-    }
-    else{
-        std::cout << "Failed to load texture" << std::endl;
-    }
+    int frameNum = fbxmodel.getFrameNum();
     
     ourShader.use();
     
@@ -166,7 +97,7 @@ int main(int argc, char** argv) {
         deltaTime2 += (currentFrame - lastFrame) / limitFPS;
         lastFrame = currentFrame;
         
-        std::cout << deltaTime2 << std::endl;
+        //std::cout << deltaTime2 << std::endl;
         
         // input
         // -----
@@ -189,15 +120,13 @@ int main(int argc, char** argv) {
             if(startAnimation){
                 fbxmodel.updateAnimation(ourShader, frameIndex);
                 frameIndex++;
-                if(frameIndex == fbxmodel.rig.Joints[0].frames.size())
+                if(frameIndex == frameNum)
                     frameIndex=0;
             }
             deltaTime2--;
         }
         
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+        fbxmodel.draw();
         
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -269,6 +198,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(yoffset);
 }
+
 /*
 #include <fbxsdk.h>
 

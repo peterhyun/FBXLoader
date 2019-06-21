@@ -9,6 +9,10 @@
 #include "FBXModel.h"
 
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+
 void PrintMatrix(const FbxAMatrix& pMatrix)
 {
     
@@ -182,7 +186,7 @@ void FBXModel::ReadNormal(FbxMesh* mesh, int inCtrlPointIndex, int inVertexCount
     }
 }
 
-void FBXModel::ProcessMesh(FbxNode* node, std::vector<Vertex> * vertices){
+void FBXModel::ProcessMesh(FbxNode* node){
     //First check if the child node is a mesh node.
     if(node->GetNodeAttribute() == NULL){
         std::cout << "Attribute is NULL" << std::endl;
@@ -216,11 +220,11 @@ void FBXModel::ProcessMesh(FbxNode* node, std::vector<Vertex> * vertices){
             vertex.position = position[j];
             vertex.normal = normal[j];
             vertex.UV = UV[j];
-            vertices->push_back(vertex);
+            vertices.push_back(vertex);
             vertexCounter++;
         }
     }
-    std::cout << "Number of 'vertices': " << vertices->size() << std::endl;
+    std::cout << "Number of 'vertices': " << vertices.size() << std::endl;
 }
 
 void FBXModel::ProcessSkeletonHierarchy(FbxNode* rootNode){
@@ -289,12 +293,12 @@ void FBXModel::ProcessJointsAndAnimation(FbxNode* node){
             int currJointIndex = findJointIndexUsingName(currJointName);
             std::cout << currJointName << std::endl;
             std::cout << "currJointIndex is " << currJointIndex << std::endl;
-            FbxAMatrix transformMatrix;
+            //FbxAMatrix transformMatrix;
             FbxAMatrix transformLinkMatrix;
             FbxAMatrix globalBindPoseInverseMatrix;
-            currCluster->GetTransformMatrix(transformMatrix);
+            //currCluster->GetTransformMatrix(transformMatrix);
             currCluster->GetTransformLinkMatrix(transformLinkMatrix);
-            globalBindPoseInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix;
+            globalBindPoseInverseMatrix = transformLinkMatrix.Inverse(); //* transformMatrix;
             
             for(int i=0;i<4;i++){
                 for(int j=0;j<4;j++){
@@ -346,43 +350,16 @@ void FBXModel::ProcessJointsAndAnimation(FbxNode* node){
                         temp2[j][k] = temp.Get(j, k);
                     }
                 }
-                //std::cout << glm::to_string(temp2) << std::endl;
                 rig.Joints[currJointIndex].frames.push_back(temp2);
-                //rig.Joints[currJointIndex].frames.push_back(glm::mat4(1.0));
-                //std::cout << rig.Joints[currJointIndex].frames[i][0][0] << std::endl;
-                //PrintMatrix(rig.Joints[currJointIndex].frames[i]);
             }
-            //std::cout << mAnimationLength << std::endl;
-            
-            /*
-            // Get animation information
-            // Now only supports one take
-            FbxAnimStack* currAnimStack = mFBXScene->GetSrcObject(0);
-            FbxString animStackName = currAnimStack->GetName();
-            mAnimationName = animStackName.Buffer();
-            FbxTakeInfo* takeInfo = mFBXScene->GetTakeInfo(animStackName);
-            FbxTime start = takeInfo->mLocalTimeSpan.GetStart();
-            FbxTime end = takeInfo->mLocalTimeSpan.GetStop();
-            mAnimationLength = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
-            Keyframe** currAnim = &mSkeleton.mJoints[currJointIndex].mAnimation;
-            
-            for (FbxLongLong i = start.GetFrameCount(FbxTime::eFrames24); i <= end.GetFrameCount(FbxTime::eFrames24); ++i)
-            {
-                FbxTime currTime;
-                currTime.SetFrame(i, FbxTime::eFrames24);
-                *currAnim = new Keyframe();
-                (*currAnim)->mFrameNum = i;
-                FbxAMatrix currentTransformOffset = inNode->EvaluateGlobalTransform(currTime) * geometryTransform;
-                (*currAnim)->mGlobalTransform = currentTransformOffset.Inverse() * currCluster->GetLink()->EvaluateGlobalTransform(currTime);
-                currAnim = &((*currAnim)->mNext);
-            }
-             */
         }
     }
     
 }
 
-FBXModel::FBXModel(const char* lFilename, std::vector<Vertex> * vertices){
+FBXModel::FBXModel(const char* fileName){
+    this->fileName = fileName;
+    
     FbxManager* lSdkManager = FbxManager::Create();
     
     FbxIOSettings *ios = FbxIOSettings::Create(lSdkManager, IOSROOT);
@@ -390,7 +367,7 @@ FBXModel::FBXModel(const char* lFilename, std::vector<Vertex> * vertices){
     
     FbxImporter* lImporter = FbxImporter::Create(lSdkManager,"");
     
-    if(!lImporter->Initialize(lFilename, -1, lSdkManager->GetIOSettings())) {
+    if(!lImporter->Initialize(fileName, -1, lSdkManager->GetIOSettings())) {
         printf("Call to FBXModel::Initialize() failed.\n");
         printf("Error returned: %s\n\n", lImporter->GetStatus().GetErrorString());
         exit(-1);
@@ -407,12 +384,13 @@ FBXModel::FBXModel(const char* lFilename, std::vector<Vertex> * vertices){
         ProcessSkeletonHierarchy(rootNode);
         std::cout << rootNode->GetChildCount() << std::endl;
         for(int i = 0; i < rootNode->GetChildCount(); i++){
-            std::cout << "i is " << i << std::endl;
-            ProcessMesh(rootNode->GetChild(i), vertices);
+            ProcessMesh(rootNode->GetChild(i));
             ProcessJointsAndAnimation(rootNode->GetChild(i));
         }
     }
-    this->vertices = vertices;
+    SetJointIndices_Weights();
+    
+    SetBuffers_Textures();
     
     // Destroy the SDK manager and all the other objects it was handling.
     lSdkManager->Destroy();
@@ -454,31 +432,20 @@ bool insert_if_not_present(std::multimap<glm::vec3, Joint_Weight>& map, std::pai
     return false;
 }
 
-void FBXModel::SetJointIndices_Weights(Shader& outShader){
+void FBXModel::SetJointIndices_Weights(){
     std::multimap<glm::vec3, Joint_Weight> removeDuplicatePair;
     for (std::map<glm::vec3, Joint_Weight>::iterator it=map.begin(); it!=map.end(); ++it){
         std::pair<glm::vec3, Joint_Weight> pair = std::make_pair(it->first, it->second);
         insert_if_not_present(removeDuplicatePair, pair);
     }
-    for(int i=0;i<vertices->size();i++){
-        /*
-        glm::vec3 position = (*vertices)[i].position;
-        std::pair<std::multimap<glm::vec3, Joint_Weight>::iterator, std::multimap<glm::vec3, Joint_Weight>::iterator> result = removeDuplicatePair.equal_range(position);
-        std::cout << "All values for this position are" << std::endl;
-        for(std::multimap<glm::vec3, Joint_Weight>::iterator it=result.first;it!=result.second;it++){
-            Joint_Weight temp = it->second;
-            std::cout << temp.JointIndex << ", and weight is " << temp.weight << std::endl;
-        }
+    for(int i=0;i<vertices.size();i++){
         
-        int count = std::distance(result.first, result.second);
-        std::cout << "Total number of values for key are " << count << std::endl;
-         */
         float indices[4] = {};
         float weights[4] = {};
         float indices2[4] = {};
         float weights2[4] = {};
         
-        glm::vec3 position = (*vertices)[i].position;
+        glm::vec3 position = vertices[i].position;
         std::pair<std::multimap<glm::vec3, Joint_Weight>::iterator, std::multimap<glm::vec3, Joint_Weight>::iterator> result = removeDuplicatePair.equal_range(position);
         int count = 0;
         for(std::multimap<glm::vec3, Joint_Weight>::iterator it=result.first;it!=result.second;it++){
@@ -493,11 +460,72 @@ void FBXModel::SetJointIndices_Weights(Shader& outShader){
             }
             count++;
         }
-        (*vertices)[i].jointIndices = glm::vec4(indices[0], indices[1], indices[2], indices[3]);
-        (*vertices)[i].jointIndices2 = glm::vec4(indices2[0], indices2[1], indices2[2], indices2[3]);
+        vertices[i].jointIndices = glm::vec4(indices[0], indices[1], indices[2], indices[3]);
+        vertices[i].jointIndices2 = glm::vec4(indices2[0], indices2[1], indices2[2], indices2[3]);
         
-        (*vertices)[i].weights = glm::vec4(weights[0], weights[1], weights[2], weights[3]);
-        (*vertices)[i].weights2 = glm::vec4(weights2[0], weights2[1], weights2[2], weights2[3]);
+        vertices[i].weights = glm::vec4(weights[0], weights[1], weights[2], weights[3]);
+        vertices[i].weights2 = glm::vec4(weights2[0], weights2[1], weights2[2], weights2[3]);
         
     }
+}
+
+void FBXModel::SetBuffers_Textures(){
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    //glGenBuffers(1, &EBO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, out_indices.size()*sizeof(unsigned int), &out_indices[0], GL_STATIC_DRAW);
+    
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)0);
+    //std::cout << offsetof(Vertex, normal) << std::endl;
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, normal));
+    //std::cout << offsetof(Vertex, UV) << std::endl;
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, UV));
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, jointIndices));
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, jointIndices2));
+    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, weights));
+    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, weights2));
+    
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(3);
+    glEnableVertexAttribArray(4);
+    glEnableVertexAttribArray(5);
+    glEnableVertexAttribArray(6);
+    glBindVertexArray(0);
+    
+    //Now generate textures
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    int width, height, nrChannels;
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char * data = stbi_load("./Defeated.fbm/maria_diffuse.png", &width, &height, &nrChannels, 4);
+    if(data){
+        std::cout << "Loaded texture!" << std::endl;
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        stbi_image_free(data);
+    }
+    else{
+        std::cout << "Failed to load texture" << std::endl;
+    }
+}
+
+void FBXModel::draw(){
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+}
+
+int FBXModel::getFrameNum(){
+    return rig.Joints[0].frames.size();
 }

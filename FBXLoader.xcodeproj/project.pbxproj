@@ -28,6 +28,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		336D647522B91C5700AB8469 /* ShovedSpin.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ShovedSpin.fbm; sourceTree = "<group>"; };
+		336D647622B91C5700AB8469 /* ShovedSpin.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = ShovedSpin.fbx; sourceTree = "<group>"; };
+		336D647722B91CCF00AB8469 /* SambaDancing.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SambaDancing.fbm; sourceTree = "<group>"; };
+		336D647822B91CCF00AB8469 /* SambaDancing.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = SambaDancing.fbx; sourceTree = "<group>"; };
+		336D647922B91E3B00AB8469 /* Capoeira.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Capoeira.fbx; sourceTree = "<group>"; };
 		33BE457022ACF5BE00AB7A78 /* FBXLoader */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FBXLoader; sourceTree = BUILT_PRODUCTS_DIR; };
 		33BE457322ACF5BE00AB7A78 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		33BE457B22ACFB7100AB7A78 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/release/libfbxsdk.dylib; sourceTree = "<group>"; };
@@ -92,6 +97,11 @@
 		33BE457222ACF5BE00AB7A78 /* FBXLoader */ = {
 			isa = PBXGroup;
 			children = (
+				336D647922B91E3B00AB8469 /* Capoeira.fbx */,
+				336D647722B91CCF00AB8469 /* SambaDancing.fbm */,
+				336D647822B91CCF00AB8469 /* SambaDancing.fbx */,
+				336D647522B91C5700AB8469 /* ShovedSpin.fbm */,
+				336D647622B91C5700AB8469 /* ShovedSpin.fbx */,
 				33D8D6B222B53DA000561C50 /* Pirate.fbm */,
 				33D8D6B122B53DA000561C50 /* Pirate.fbx */,
 				33D8D6B022B53DA000561C50 /* zombiegirl_TPose.fbm */,

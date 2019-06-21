@@ -9,15 +9,15 @@
 #ifndef FBXModel_hpp
 #define FBXModel_hpp
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <fbxsdk.h>
 #include <vector>
 #include <map>
 #include <iostream>
-#include <glm/glm.hpp>
 #include "Shader.h"
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
 
 struct Vertex{
     glm::vec3 position;
@@ -45,7 +45,6 @@ struct Joint{
     FbxNode* node;
     int * controlPointIndices;
     double * weights;
-    //FbxVector4 * controlPoints;
     //Stores animation data here.
     std::vector<glm::mat4> frames;
 };
@@ -64,24 +63,29 @@ namespace glm{
 
 class FBXModel{
 private:
+    std::vector<Vertex> vertices;
+    unsigned int VAO, VBO;
+    Skeleton rig;
     void ReadPosition(FbxMesh* mesh, int ctrlPointIndex, glm::vec3& position);
     void ReadNormal(FbxMesh* mesh, int inCtrlPointIndex, int inVertexCounter, glm::vec3& outNormal);
-    void ProcessMesh(FbxNode* node, std::vector<Vertex> * vertices);
+    void ProcessMesh(FbxNode* node);
     void ReadUV(FbxMesh* mesh, int inCtrlPointIndex, int textureUVIndex, glm::vec2& UV);
     void ProcessSkeletonHierarchy(FbxNode* node);
     void ProcessSkeletonHierarchyRecursively(FbxNode* node, int myindex, int ParentIndex);
     void ProcessJointsAndAnimation(FbxNode* node);
     int findJointIndexUsingName(const char * jointName);
     FbxScene* scene;
-    std::vector<Vertex> * vertices;
     std::multimap<glm::vec3, Joint_Weight> map;
+    const char * fileName;
+    void SetBuffers_Textures();
+    void SetJointIndices_Weights();
     //Map for each control point -> Find the joints_weight pair affecting it.
 public:
-    Skeleton rig;
-    FBXModel(const char* lFilename, std::vector<Vertex> * vertices);
+    FBXModel(const char* filename);
     void SetGlobalBindInverseMatrices(Shader& ourShader);
     void updateAnimation(Shader& ourShader, int frameIndex);
-    void SetJointIndices_Weights(Shader& outShader);
+    void draw();
+    int getFrameNum();
 };
 
 
