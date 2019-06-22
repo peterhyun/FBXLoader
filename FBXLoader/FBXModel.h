@@ -77,11 +77,11 @@ private:
     FbxScene* scene;
     std::multimap<glm::vec3, Joint_Weight> map;
     const char * fileName;
-    void SetBuffers_Textures();
+    void SetBuffers_Textures(Shader& ourShader);
     void SetJointIndices_Weights();
     //Map for each control point -> Find the joints_weight pair affecting it.
 public:
-    FBXModel(const char* filename);
+    FBXModel(const char* filename, Shader& ourShader);
     void SetGlobalBindInverseMatrices(Shader& ourShader);
     void updateAnimation(Shader& ourShader, int frameIndex);
     void draw();

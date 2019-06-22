@@ -28,6 +28,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3341728A22BD481D006879FB /* Jumping.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Jumping.fbx; sourceTree = "<group>"; };
+		3341728B22BD481D006879FB /* Jumping.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Jumping.fbm; sourceTree = "<group>"; };
 		336D647522B91C5700AB8469 /* ShovedSpin.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ShovedSpin.fbm; sourceTree = "<group>"; };
 		336D647622B91C5700AB8469 /* ShovedSpin.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = ShovedSpin.fbx; sourceTree = "<group>"; };
 		336D647722B91CCF00AB8469 /* SambaDancing.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SambaDancing.fbm; sourceTree = "<group>"; };
@@ -97,6 +99,8 @@
 		33BE457222ACF5BE00AB7A78 /* FBXLoader */ = {
 			isa = PBXGroup;
 			children = (
+				3341728B22BD481D006879FB /* Jumping.fbm */,
+				3341728A22BD481D006879FB /* Jumping.fbx */,
 				336D647922B91E3B00AB8469 /* Capoeira.fbx */,
 				336D647722B91CCF00AB8469 /* SambaDancing.fbm */,
 				336D647822B91CCF00AB8469 /* SambaDancing.fbx */,

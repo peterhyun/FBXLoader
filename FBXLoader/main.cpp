@@ -77,8 +77,8 @@ int main(int argc, char** argv) {
     // -------------------------
     Shader ourShader("model_loading_vs.txt", "model_loading_fs.txt");
     
-    const char* fileName = "Defeated.fbx";
-    FBXModel fbxmodel(fileName);
+    const char* fileName = "SambaDancing.fbx";
+    FBXModel fbxmodel(fileName, ourShader);
     
     int frameNum = fbxmodel.getFrameNum();
     
@@ -114,8 +114,9 @@ int main(int argc, char** argv) {
             ourShader.setMat4("model", model);
             ourShader.setMat4("projection", projection);
             ourShader.setMat4("view", view);
-            ourShader.setVec3("lightDirection", glm::vec3(0.2f, 1.0f, 0.3f));
+            ourShader.setVec3("lightDirection", glm::vec3(1.0f, 1.0f, 1.0f));
             ourShader.setFloat("signal", signal2);
+            ourShader.setVec3("viewPos", camera.Position);
             fbxmodel.SetGlobalBindInverseMatrices(ourShader);
             if(startAnimation){
                 fbxmodel.updateAnimation(ourShader, frameIndex);

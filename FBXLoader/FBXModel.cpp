@@ -278,8 +278,8 @@ void FBXModel::ProcessJointsAndAnimation(FbxNode* node){
     FbxMesh * currMesh = node->GetMesh();
     int numOfDeformers = currMesh->GetDeformerCount();
     
-    std::cout << node->GetName() << std::endl;
-    
+    std::cout << "current node name is " << node->GetName() << std::endl;
+    std::cout << "the numOfDeformers of this node is " <<numOfDeformers << std::endl;
     for(int deformerIndex = 0;deformerIndex < numOfDeformers;deformerIndex++){
         FbxSkin* currSkin = reinterpret_cast<FbxSkin*>(currMesh->GetDeformer(deformerIndex, FbxDeformer::eSkin));
         if(!currSkin){
@@ -287,11 +287,12 @@ void FBXModel::ProcessJointsAndAnimation(FbxNode* node){
         }
         int numOfClusters = currSkin->GetClusterCount();
         //For each joint
+        std::cout << "numOfCluster is "<< numOfClusters << std::endl;
         for(int clusterIndex=0;clusterIndex < numOfClusters;clusterIndex++){
             FbxCluster* currCluster = currSkin->GetCluster(clusterIndex);
             const char * currJointName = currCluster->GetLink()->GetName();
             int currJointIndex = findJointIndexUsingName(currJointName);
-            std::cout << currJointName << std::endl;
+            std::cout << "currJointName is " << currJointName << std::endl;
             std::cout << "currJointIndex is " << currJointIndex << std::endl;
             //FbxAMatrix transformMatrix;
             FbxAMatrix transformLinkMatrix;
@@ -357,7 +358,7 @@ void FBXModel::ProcessJointsAndAnimation(FbxNode* node){
     
 }
 
-FBXModel::FBXModel(const char* fileName){
+FBXModel::FBXModel(const char* fileName, Shader& ourShader){
     this->fileName = fileName;
     
     FbxManager* lSdkManager = FbxManager::Create();
@@ -383,14 +384,16 @@ FBXModel::FBXModel(const char* fileName){
     if(rootNode) {
         ProcessSkeletonHierarchy(rootNode);
         std::cout << rootNode->GetChildCount() << std::endl;
+        std::cout << "root has " << rootNode->GetChildCount() << " children." << std::endl;
         for(int i = 0; i < rootNode->GetChildCount(); i++){
             ProcessMesh(rootNode->GetChild(i));
+            std::cout << "processing joints and animation" << std::endl;
             ProcessJointsAndAnimation(rootNode->GetChild(i));
         }
     }
     SetJointIndices_Weights();
     
-    SetBuffers_Textures();
+    SetBuffers_Textures(ourShader);
     
     // Destroy the SDK manager and all the other objects it was handling.
     lSdkManager->Destroy();
@@ -469,7 +472,7 @@ void FBXModel::SetJointIndices_Weights(){
     }
 }
 
-void FBXModel::SetBuffers_Textures(){
+void FBXModel::SetBuffers_Textures(Shader& ourShader){
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     //glGenBuffers(1, &EBO);
@@ -499,16 +502,17 @@ void FBXModel::SetBuffers_Textures(){
     glBindVertexArray(0);
     
     //Now generate textures
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    unsigned int diffuseTexture;
+    glGenTextures(1, &diffuseTexture);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuseTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char * data = stbi_load("./Defeated.fbm/maria_diffuse.png", &width, &height, &nrChannels, 4);
+    unsigned char * data = stbi_load("./SambaDancing.fbm/void_diffuse.png", &width, &height, &nrChannels, 4);
     if(data){
         std::cout << "Loaded texture!" << std::endl;
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -518,6 +522,28 @@ void FBXModel::SetBuffers_Textures(){
     else{
         std::cout << "Failed to load texture" << std::endl;
     }
+    unsigned int specularTexture;
+    glGenTextures(1, &specularTexture);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, specularTexture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    stbi_set_flip_vertically_on_load(true);
+    data = stbi_load("./SambaDancing.fbm/void_specular.png", &width, &height, &nrChannels, 4);
+    if(data){
+        std::cout << "Loaded texture!" << std::endl;
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        stbi_image_free(data);
+    }
+    else{
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    ourShader.use();
+    ourShader.setInt("diffuseTexture", 0);
+    ourShader.setInt("specularTexture", 1);
 }
 
 void FBXModel::draw(){
