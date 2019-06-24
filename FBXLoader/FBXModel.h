@@ -18,7 +18,6 @@
 #include <iostream>
 #include "Shader.h"
 
-
 struct Vertex{
     glm::vec3 position;
     glm::vec3 normal;
@@ -68,6 +67,7 @@ private:
     Skeleton rig;
     void ReadPosition(FbxMesh* mesh, int ctrlPointIndex, glm::vec3& position);
     void ReadNormal(FbxMesh* mesh, int inCtrlPointIndex, int inVertexCounter, glm::vec3& outNormal);
+    void ProcessTextures(FbxNode* node);
     void ProcessMesh(FbxNode* node);
     void ReadUV(FbxMesh* mesh, int inCtrlPointIndex, int textureUVIndex, glm::vec2& UV);
     void ProcessSkeletonHierarchy(FbxNode* node);
@@ -76,12 +76,13 @@ private:
     int findJointIndexUsingName(const char * jointName);
     FbxScene* scene;
     std::multimap<glm::vec3, Joint_Weight> map;
-    const char * fileName;
     void SetBuffers_Textures(Shader& ourShader);
     void SetJointIndices_Weights();
+    const char * diffuseFileName;
+    const char * specularFileName;
     //Map for each control point -> Find the joints_weight pair affecting it.
 public:
-    FBXModel(const char* filename, Shader& ourShader);
+    FBXModel(const char * filename, Shader& ourShader);
     void SetGlobalBindInverseMatrices(Shader& ourShader);
     void updateAnimation(Shader& ourShader, int frameIndex);
     void draw();

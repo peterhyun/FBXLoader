@@ -12,7 +12,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-
 void PrintMatrix(const FbxAMatrix& pMatrix)
 {
     
@@ -187,19 +186,7 @@ void FBXModel::ReadNormal(FbxMesh* mesh, int inCtrlPointIndex, int inVertexCount
 }
 
 void FBXModel::ProcessMesh(FbxNode* node){
-    //First check if the child node is a mesh node.
-    if(node->GetNodeAttribute() == NULL){
-        std::cout << "Attribute is NULL" << std::endl;
-        return;
-    }
-    FbxNodeAttribute::EType AttributeType = node->GetNodeAttribute()->GetAttributeType();
-    if(AttributeType != FbxNodeAttribute::eMesh){
-        if(AttributeType == FbxNodeAttribute::eSkeleton)
-            std::cout << "Attribute is skeleton" << std::endl;
-        return;
-    }
-    
-    FbxMesh* currMesh = (FbxMesh *) node->GetNodeAttribute();
+    FbxMesh* currMesh = node->GetMesh();
     int mTriangleCount = currMesh->GetPolygonCount();
     std::cout << "Number of polygons are " << mTriangleCount << std::endl;
     int vertexCounter = 0;
@@ -265,19 +252,8 @@ int FBXModel::findJointIndexUsingName(const char * jointName){
 }
 
 void FBXModel::ProcessJointsAndAnimation(FbxNode* node){
-    if(node->GetNodeAttribute() == NULL){
-        std::cout << "Attribute is NULL" << std::endl;
-        return;
-    }
-    FbxNodeAttribute::EType AttributeType = node->GetNodeAttribute()->GetAttributeType();
-    if(AttributeType != FbxNodeAttribute::eMesh){
-        if(AttributeType == FbxNodeAttribute::eSkeleton)
-            std::cout << "Attribute is skeleton" << std::endl;
-        return;
-    }
     FbxMesh * currMesh = node->GetMesh();
     int numOfDeformers = currMesh->GetDeformerCount();
-    
     std::cout << "current node name is " << node->GetName() << std::endl;
     std::cout << "the numOfDeformers of this node is " <<numOfDeformers << std::endl;
     for(int deformerIndex = 0;deformerIndex < numOfDeformers;deformerIndex++){
@@ -358,47 +334,6 @@ void FBXModel::ProcessJointsAndAnimation(FbxNode* node){
     
 }
 
-FBXModel::FBXModel(const char* fileName, Shader& ourShader){
-    this->fileName = fileName;
-    
-    FbxManager* lSdkManager = FbxManager::Create();
-    
-    FbxIOSettings *ios = FbxIOSettings::Create(lSdkManager, IOSROOT);
-    lSdkManager->SetIOSettings(ios);
-    
-    FbxImporter* lImporter = FbxImporter::Create(lSdkManager,"");
-    
-    if(!lImporter->Initialize(fileName, -1, lSdkManager->GetIOSettings())) {
-        printf("Call to FBXModel::Initialize() failed.\n");
-        printf("Error returned: %s\n\n", lImporter->GetStatus().GetErrorString());
-        exit(-1);
-    }
-    
-    scene = FbxScene::Create(lSdkManager,"myScene");
-    lImporter->Import(scene);
-    FbxGeometryConverter geometryConverter(lSdkManager);
-    geometryConverter.Triangulate(scene, true);
-    lImporter->Destroy();
-    
-    FbxNode* rootNode = scene->GetRootNode();
-    if(rootNode) {
-        ProcessSkeletonHierarchy(rootNode);
-        std::cout << rootNode->GetChildCount() << std::endl;
-        std::cout << "root has " << rootNode->GetChildCount() << " children." << std::endl;
-        for(int i = 0; i < rootNode->GetChildCount(); i++){
-            ProcessMesh(rootNode->GetChild(i));
-            std::cout << "processing joints and animation" << std::endl;
-            ProcessJointsAndAnimation(rootNode->GetChild(i));
-        }
-    }
-    SetJointIndices_Weights();
-    
-    SetBuffers_Textures(ourShader);
-    
-    // Destroy the SDK manager and all the other objects it was handling.
-    lSdkManager->Destroy();
-}
-
 void FBXModel::SetGlobalBindInverseMatrices(Shader &ourShader){
     std::vector<glm::mat4> globalBindInverseMatrices;
     for(int i=0;i<rig.Joints.size();i++){
@@ -426,6 +361,7 @@ typename std::multimap<glm::vec3, Joint_Weight>::const_iterator find_pair(std::m
             return p;
     return map.end();
 }
+
 bool insert_if_not_present(std::multimap<glm::vec3, Joint_Weight>& map, std::pair<glm::vec3, Joint_Weight>& pair)
 {
     if (find_pair(map, pair) == map.end()) {
@@ -483,9 +419,7 @@ void FBXModel::SetBuffers_Textures(Shader& ourShader){
     //glBufferData(GL_ELEMENT_ARRAY_BUFFER, out_indices.size()*sizeof(unsigned int), &out_indices[0], GL_STATIC_DRAW);
     
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)0);
-    //std::cout << offsetof(Vertex, normal) << std::endl;
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, normal));
-    //std::cout << offsetof(Vertex, UV) << std::endl;
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, UV));
     glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, jointIndices));
     glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 24*sizeof(float), (void *)offsetof(Vertex, jointIndices2));
@@ -512,7 +446,8 @@ void FBXModel::SetBuffers_Textures(Shader& ourShader){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     int width, height, nrChannels;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char * data = stbi_load("./SambaDancing.fbm/void_diffuse.png", &width, &height, &nrChannels, 4);
+    
+    unsigned char * data = stbi_load(diffuseFileName, &width, &height, &nrChannels, 4);
     if(data){
         std::cout << "Loaded texture!" << std::endl;
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -531,7 +466,8 @@ void FBXModel::SetBuffers_Textures(Shader& ourShader){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     stbi_set_flip_vertically_on_load(true);
-    data = stbi_load("./SambaDancing.fbm/void_specular.png", &width, &height, &nrChannels, 4);
+    
+    data = stbi_load(specularFileName, &width, &height, &nrChannels, 4);
     if(data){
         std::cout << "Loaded texture!" << std::endl;
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -554,4 +490,64 @@ void FBXModel::draw(){
 
 int FBXModel::getFrameNum(){
     return rig.Joints[0].frames.size();
+}
+
+void FBXModel::ProcessTextures(FbxNode* node){
+    FbxMesh * mesh = node->GetMesh();
+    //Only supports one material now.
+    FbxSurfaceMaterial * material = (FbxSurfaceMaterial *)node->GetSrcObject<FbxSurfaceMaterial>();
+    if(material != NULL){
+        FbxProperty prop = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
+        FbxFileTexture* fileTexture = FbxCast<FbxFileTexture>(prop.GetSrcObject<FbxTexture>());
+        diffuseFileName = fileTexture->GetFileName();
+        prop = material->FindProperty(FbxSurfaceMaterial::sSpecular);
+        fileTexture = FbxCast<FbxFileTexture>(prop.GetSrcObject<FbxTexture>());
+        specularFileName = fileTexture->GetFileName();
+        std::cout << specularFileName << std::endl;
+    }
+}
+
+FBXModel::FBXModel(const char * fileName, Shader& ourShader){
+    
+    FbxManager* lSdkManager = FbxManager::Create();
+    
+    FbxIOSettings *ios = FbxIOSettings::Create(lSdkManager, IOSROOT);
+    lSdkManager->SetIOSettings(ios);
+    
+    FbxImporter* lImporter = FbxImporter::Create(lSdkManager,"");
+    
+    if(!lImporter->Initialize(fileName, -1, lSdkManager->GetIOSettings())) {
+        printf("Call to FBXModel::Initialize() failed.\n");
+        printf("Error returned: %s\n\n", lImporter->GetStatus().GetErrorString());
+        exit(-1);
+    }
+    
+    scene = FbxScene::Create(lSdkManager,"myScene");
+    lImporter->Import(scene);
+    FbxGeometryConverter geometryConverter(lSdkManager);
+    geometryConverter.Triangulate(scene, true);
+    lImporter->Destroy();
+    
+    FbxNode* rootNode = scene->GetRootNode();
+    if(rootNode) {
+        ProcessSkeletonHierarchy(rootNode);
+        std::cout << rootNode->GetChildCount() << std::endl;
+        std::cout << "root has " << rootNode->GetChildCount() << " children." << std::endl;
+        for(int i = 0; i < rootNode->GetChildCount(); i++){
+            //The childs all have to be Mesh. No SKELETON nodes.
+            FbxNode * childNode = rootNode->GetChild(i);
+            FbxMesh * mesh = childNode->GetMesh();
+            if(mesh){
+                ProcessMesh(childNode);
+                ProcessTextures(childNode);
+                ProcessJointsAndAnimation(childNode);
+            }
+        }
+    }
+    SetJointIndices_Weights();
+    
+    SetBuffers_Textures(ourShader);
+    
+    // Destroy the SDK manager and all the other objects it was handling.
+    lSdkManager->Destroy();
 }

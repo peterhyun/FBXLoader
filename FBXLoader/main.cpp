@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
     // -------------------------
     Shader ourShader("model_loading_vs.txt", "model_loading_fs.txt");
     
-    const char* fileName = "SambaDancing.fbx";
+    const char * fileName = "SambaDancing.fbx";
     FBXModel fbxmodel(fileName, ourShader);
     
     int frameNum = fbxmodel.getFrameNum();
