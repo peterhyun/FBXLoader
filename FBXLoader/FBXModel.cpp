@@ -7,6 +7,7 @@
 //
 
 #include "FBXModel.h"
+#include <btBulletDynamicsCommon.h>
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -334,22 +335,22 @@ void FBXModel::ProcessJointsAndAnimation(FbxNode* node){
     
 }
 
-void FBXModel::SetGlobalBindInverseMatrices(Shader &ourShader){
+void FBXModel::SetGlobalBindInverseMatrices(){
     std::vector<glm::mat4> globalBindInverseMatrices;
     for(int i=0;i<rig.Joints.size();i++){
         globalBindInverseMatrices.push_back(rig.Joints[i].globalBindPoseInverse);
     }
-    ourShader.setMultipleMat4("JointGlobalBindInverse", rig.Joints.size(), &globalBindInverseMatrices[0]);
+    ourShader->setMultipleMat4("JointGlobalBindInverse", rig.Joints.size(), &globalBindInverseMatrices[0]);
 }
 
-void FBXModel::updateAnimation(Shader &ourShader, int frameIndex){
+void FBXModel::updateAnimation(int frameIndex){
     //i is the index of the frame.
     std::vector<glm::mat4> jointTransformations;
-        //Get joint transformations
+    //Get joint transformations
     for(int j=0;j<rig.Joints.size();j++){
         jointTransformations.push_back(rig.Joints[j].frames[frameIndex]);
     }
-    ourShader.setMultipleMat4("Animation",rig.Joints.size(), &jointTransformations[0]);
+    ourShader->setMultipleMat4("Animation",rig.Joints.size(), &jointTransformations[0]);
 }
 
 typename std::multimap<glm::vec3, Joint_Weight>::const_iterator find_pair(std::multimap<glm::vec3, Joint_Weight>& map, std::pair<glm::vec3, Joint_Weight>& pair)
@@ -408,7 +409,7 @@ void FBXModel::SetJointIndices_Weights(){
     }
 }
 
-void FBXModel::SetBuffers_Textures(Shader& ourShader){
+void FBXModel::SetBuffers_Textures(){
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     //glGenBuffers(1, &EBO);
@@ -477,9 +478,9 @@ void FBXModel::SetBuffers_Textures(Shader& ourShader){
     else{
         std::cout << "Failed to load texture" << std::endl;
     }
-    ourShader.use();
-    ourShader.setInt("diffuseTexture", 0);
-    ourShader.setInt("specularTexture", 1);
+    ourShader->use();
+    ourShader->setInt("diffuseTexture", 0);
+    ourShader->setInt("specularTexture", 1);
 }
 
 void FBXModel::draw(){
@@ -493,7 +494,6 @@ int FBXModel::getFrameNum(){
 }
 
 void FBXModel::ProcessTextures(FbxNode* node){
-    FbxMesh * mesh = node->GetMesh();
     //Only supports one material now.
     FbxSurfaceMaterial * material = (FbxSurfaceMaterial *)node->GetSrcObject<FbxSurfaceMaterial>();
     if(material != NULL){
@@ -507,8 +507,9 @@ void FBXModel::ProcessTextures(FbxNode* node){
     }
 }
 
-FBXModel::FBXModel(const char * fileName, Shader& ourShader){
-    
+FBXModel::FBXModel(const char * fileName, Shader * ourShader){
+    this->ourShader = ourShader;
+    ourShader->use();
     FbxManager* lSdkManager = FbxManager::Create();
     
     FbxIOSettings *ios = FbxIOSettings::Create(lSdkManager, IOSROOT);
@@ -544,9 +545,9 @@ FBXModel::FBXModel(const char * fileName, Shader& ourShader){
             }
         }
     }
-    SetJointIndices_Weights();
     
-    SetBuffers_Textures(ourShader);
+    SetJointIndices_Weights();
+    SetBuffers_Textures();
     
     // Destroy the SDK manager and all the other objects it was handling.
     lSdkManager->Destroy();

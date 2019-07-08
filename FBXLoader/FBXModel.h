@@ -54,10 +54,10 @@ struct Skeleton{
 
 namespace glm{
     inline bool operator<(const glm::vec3& lhs, const glm::vec3& rhs)
-{
-    return lhs.x < rhs.x ||
-    (lhs.x == rhs.x && (lhs.y < rhs.y || lhs.y == rhs.y && lhs.z < rhs.z));
-}
+    {
+        return lhs.x < rhs.x ||
+        (lhs.x == rhs.x && (lhs.y < rhs.y || lhs.y == rhs.y && lhs.z < rhs.z));
+    }
 }
 
 class FBXModel{
@@ -76,15 +76,16 @@ private:
     int findJointIndexUsingName(const char * jointName);
     FbxScene* scene;
     std::multimap<glm::vec3, Joint_Weight> map;
-    void SetBuffers_Textures(Shader& ourShader);
+    void SetBuffers_Textures();
     void SetJointIndices_Weights();
     const char * diffuseFileName;
     const char * specularFileName;
+    Shader * ourShader;
     //Map for each control point -> Find the joints_weight pair affecting it.
 public:
-    FBXModel(const char * filename, Shader& ourShader);
-    void SetGlobalBindInverseMatrices(Shader& ourShader);
-    void updateAnimation(Shader& ourShader, int frameIndex);
+    FBXModel(const char * filename, Shader * shader);
+    void SetGlobalBindInverseMatrices();
+    void updateAnimation(int frameIndex);
     void draw();
     int getFrameNum();
 };

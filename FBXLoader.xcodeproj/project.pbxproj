@@ -7,25 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		334172A422BFC594006879FB /* libBullet3Collision_xcode4_x64_debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3341729D22BFC3EF006879FB /* libBullet3Collision_xcode4_x64_debug.a */; };
-		334172A522BFC594006879FB /* libBullet3Dynamics_xcode4_x64_debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3341729122BFC3EF006879FB /* libBullet3Dynamics_xcode4_x64_debug.a */; };
-		334172A622BFC594006879FB /* libLinearMath_xcode4_x64_debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3341729722BFC3EF006879FB /* libLinearMath_xcode4_x64_debug.a */; };
+		334172D222C09C7D006879FB /* libBulletCollision_xcode4_x64_debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334172C722C09C66006879FB /* libBulletCollision_xcode4_x64_debug.a */; };
+		334172D322C09C7D006879FB /* libBulletDynamics_xcode4_x64_debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 334172CD22C09C67006879FB /* libBulletDynamics_xcode4_x64_debug.a */; };
+		334172D422C09C7D006879FB /* libLinearMath_xcode4_x64_debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3341729722BFC3EF006879FB /* libLinearMath_xcode4_x64_debug.a */; };
+		335E910322C9D14B00B966AD /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE459422AD112F00AB7A78 /* libfbxsdk.dylib */; };
+		338DCA3422D2F2FB0024A60D /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 338DCA3322D2F2FB0024A60D /* Renderer.cpp */; };
 		33BE457422ACF5BE00AB7A78 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33BE457322ACF5BE00AB7A78 /* main.cpp */; };
-		33BE459C22AD5B6500AB7A78 /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE459422AD112F00AB7A78 /* libfbxsdk.dylib */; };
-		33BE459D22AD5B7700AB7A78 /* libfbxsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE459622AD114A00AB7A78 /* libfbxsdk.dylib */; };
 		33BE45A422AF9E8100AB7A78 /* FBXModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33BE45A222AF9E8100AB7A78 /* FBXModel.cpp */; };
 		33BE45AA22AFA66500AB7A78 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BE45A922AFA66500AB7A78 /* libglfw.3.3.dylib */; };
 		33BE45C422AFBE4000AB7A78 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 33BE45C322AFBE4000AB7A78 /* glad.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3341729022BFC3EF006879FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3341728C22BFC3EF006879FB /* Bullet3Dynamics.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4058007138FB148B415141ED;
-			remoteInfo = Bullet3Dynamics;
-		};
 		3341729622BFC3EF006879FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3341729222BFC3EF006879FB /* LinearMath.xcodeproj */;
@@ -33,33 +26,40 @@
 			remoteGlobalIDString = 1A7B3C7C14510C4321402784;
 			remoteInfo = LinearMath;
 		};
-		3341729C22BFC3EF006879FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3341729822BFC3EF006879FB /* Bullet3Collision.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7BA93CC80A2123DA57444F11;
-			remoteInfo = Bullet3Collision;
-		};
-		3341729E22BFC516006879FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3341729822BFC3EF006879FB /* Bullet3Collision.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 1C9068EB411C3E9A7E52775C;
-			remoteInfo = Bullet3Collision;
-		};
-		334172A022BFC516006879FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3341728C22BFC3EF006879FB /* Bullet3Dynamics.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 60191AB626DE592B373D3873;
-			remoteInfo = Bullet3Dynamics;
-		};
 		334172A222BFC516006879FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3341729222BFC3EF006879FB /* LinearMath.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 677E4112374C657A411D067F;
 			remoteInfo = LinearMath;
+		};
+		334172C622C09C66006879FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 334172C222C09C66006879FB /* BulletCollision.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6C3518EA464859625A547DCF;
+			remoteInfo = BulletCollision;
+		};
+		334172CC22C09C67006879FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 334172C822C09C66006879FB /* BulletDynamics.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0B587ED96760104C077C1DA3;
+			remoteInfo = BulletDynamics;
+		};
+		334172CE22C09C72006879FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 334172C222C09C66006879FB /* BulletCollision.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 33AC76EE3B8C6EB96C286D67;
+			remoteInfo = BulletCollision;
+		};
+		334172D022C09C72006879FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 334172C822C09C66006879FB /* BulletDynamics.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 69AB0766623A0B794A6B7692;
+			remoteInfo = BulletDynamics;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -78,14 +78,13 @@
 /* Begin PBXFileReference section */
 		3341728A22BD481D006879FB /* Jumping.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Jumping.fbx; sourceTree = "<group>"; };
 		3341728B22BD481D006879FB /* Jumping.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Jumping.fbm; sourceTree = "<group>"; };
-		3341728C22BFC3EF006879FB /* Bullet3Dynamics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bullet3Dynamics.xcodeproj; path = "../../Desktop/bullet3-2.88/build3/xcode4/Bullet3Dynamics.xcodeproj"; sourceTree = "<group>"; };
 		3341729222BFC3EF006879FB /* LinearMath.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LinearMath.xcodeproj; path = "../../Desktop/bullet3-2.88/build3/xcode4/LinearMath.xcodeproj"; sourceTree = "<group>"; };
-		3341729822BFC3EF006879FB /* Bullet3Collision.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bullet3Collision.xcodeproj; path = "../../Desktop/bullet3-2.88/build3/xcode4/Bullet3Collision.xcodeproj"; sourceTree = "<group>"; };
-		336D647522B91C5700AB8469 /* ShovedSpin.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ShovedSpin.fbm; sourceTree = "<group>"; };
-		336D647622B91C5700AB8469 /* ShovedSpin.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = ShovedSpin.fbx; sourceTree = "<group>"; };
+		334172C222C09C66006879FB /* BulletCollision.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BulletCollision.xcodeproj; path = "../../Desktop/bullet3-2.88/build3/xcode4/BulletCollision.xcodeproj"; sourceTree = "<group>"; };
+		334172C822C09C66006879FB /* BulletDynamics.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BulletDynamics.xcodeproj; path = "../../Desktop/bullet3-2.88/build3/xcode4/BulletDynamics.xcodeproj"; sourceTree = "<group>"; };
 		336D647722B91CCF00AB8469 /* SambaDancing.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SambaDancing.fbm; sourceTree = "<group>"; };
 		336D647822B91CCF00AB8469 /* SambaDancing.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = SambaDancing.fbx; sourceTree = "<group>"; };
-		336D647922B91E3B00AB8469 /* Capoeira.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Capoeira.fbx; sourceTree = "<group>"; };
+		338DCA3222D2F2EE0024A60D /* Renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
+		338DCA3322D2F2FB0024A60D /* Renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		33BE457022ACF5BE00AB7A78 /* FBXLoader */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FBXLoader; sourceTree = BUILT_PRODUCTS_DIR; };
 		33BE457322ACF5BE00AB7A78 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		33BE457B22ACFB7100AB7A78 /* libfbxsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfbxsdk.dylib; path = ../../../../Applications/Autodesk/FBXSDK/2019.0/lib/clang/release/libfbxsdk.dylib; sourceTree = "<group>"; };
@@ -108,12 +107,7 @@
 		33BE45C322AFBE4000AB7A78 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 		33BE45C522AFBEBC00AB7A78 /* model_loading_fs.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_loading_fs.txt; sourceTree = "<group>"; };
 		33BE45C622AFBEBC00AB7A78 /* model_loading_vs.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = model_loading_vs.txt; sourceTree = "<group>"; };
-		33BE45C722AFD8BC00AB7A78 /* zombiegirl_TPose.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = zombiegirl_TPose.fbx; sourceTree = "<group>"; };
-		33BE45C822AFD8BC00AB7A78 /* ZombieGirlWithMotion.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = ZombieGirlWithMotion.fbx; sourceTree = "<group>"; };
 		33D8D6AF22B53D4900561C50 /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
-		33D8D6B022B53DA000561C50 /* zombiegirl_TPose.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = zombiegirl_TPose.fbm; sourceTree = "<group>"; };
-		33D8D6B122B53DA000561C50 /* Pirate.fbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Pirate.fbx; sourceTree = "<group>"; };
-		33D8D6B222B53DA000561C50 /* Pirate.fbm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Pirate.fbm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,26 +115,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				334172A422BFC594006879FB /* libBullet3Collision_xcode4_x64_debug.a in Frameworks */,
-				334172A522BFC594006879FB /* libBullet3Dynamics_xcode4_x64_debug.a in Frameworks */,
-				334172A622BFC594006879FB /* libLinearMath_xcode4_x64_debug.a in Frameworks */,
+				335E910322C9D14B00B966AD /* libfbxsdk.dylib in Frameworks */,
+				334172D222C09C7D006879FB /* libBulletCollision_xcode4_x64_debug.a in Frameworks */,
+				334172D322C09C7D006879FB /* libBulletDynamics_xcode4_x64_debug.a in Frameworks */,
+				334172D422C09C7D006879FB /* libLinearMath_xcode4_x64_debug.a in Frameworks */,
 				33BE45AA22AFA66500AB7A78 /* libglfw.3.3.dylib in Frameworks */,
-				33BE459D22AD5B7700AB7A78 /* libfbxsdk.dylib in Frameworks */,
-				33BE459C22AD5B6500AB7A78 /* libfbxsdk.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3341728D22BFC3EF006879FB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				3341729122BFC3EF006879FB /* libBullet3Dynamics_xcode4_x64_debug.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		3341729322BFC3EF006879FB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,10 +134,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3341729922BFC3EF006879FB /* Products */ = {
+		334172C322C09C66006879FB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3341729D22BFC3EF006879FB /* libBullet3Collision_xcode4_x64_debug.a */,
+				334172C722C09C66006879FB /* libBulletCollision_xcode4_x64_debug.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		334172C922C09C66006879FB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				334172CD22C09C67006879FB /* libBulletDynamics_xcode4_x64_debug.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,8 +153,8 @@
 		33BE456722ACF5BE00AB7A78 = {
 			isa = PBXGroup;
 			children = (
-				3341729822BFC3EF006879FB /* Bullet3Collision.xcodeproj */,
-				3341728C22BFC3EF006879FB /* Bullet3Dynamics.xcodeproj */,
+				334172C222C09C66006879FB /* BulletCollision.xcodeproj */,
+				334172C822C09C66006879FB /* BulletDynamics.xcodeproj */,
 				3341729222BFC3EF006879FB /* LinearMath.xcodeproj */,
 				33BE457222ACF5BE00AB7A78 /* FBXLoader */,
 				33BE457122ACF5BE00AB7A78 /* Products */,
@@ -182,16 +175,8 @@
 			children = (
 				3341728B22BD481D006879FB /* Jumping.fbm */,
 				3341728A22BD481D006879FB /* Jumping.fbx */,
-				336D647922B91E3B00AB8469 /* Capoeira.fbx */,
 				336D647722B91CCF00AB8469 /* SambaDancing.fbm */,
 				336D647822B91CCF00AB8469 /* SambaDancing.fbx */,
-				336D647522B91C5700AB8469 /* ShovedSpin.fbm */,
-				336D647622B91C5700AB8469 /* ShovedSpin.fbx */,
-				33D8D6B222B53DA000561C50 /* Pirate.fbm */,
-				33D8D6B122B53DA000561C50 /* Pirate.fbx */,
-				33D8D6B022B53DA000561C50 /* zombiegirl_TPose.fbm */,
-				33BE45C722AFD8BC00AB7A78 /* zombiegirl_TPose.fbx */,
-				33BE45C822AFD8BC00AB7A78 /* ZombieGirlWithMotion.fbx */,
 				33BE45C522AFBEBC00AB7A78 /* model_loading_fs.txt */,
 				33BE45C622AFBEBC00AB7A78 /* model_loading_vs.txt */,
 				33BE45C322AFBE4000AB7A78 /* glad.c */,
@@ -201,6 +186,8 @@
 				33BE45A222AF9E8100AB7A78 /* FBXModel.cpp */,
 				33BE45A322AF9E8100AB7A78 /* FBXModel.h */,
 				33D8D6AF22B53D4900561C50 /* stb_image.h */,
+				338DCA3222D2F2EE0024A60D /* Renderer.h */,
+				338DCA3322D2F2FB0024A60D /* Renderer.cpp */,
 			);
 			path = FBXLoader;
 			sourceTree = "<group>";
@@ -239,8 +226,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				3341729F22BFC516006879FB /* PBXTargetDependency */,
-				334172A122BFC516006879FB /* PBXTargetDependency */,
+				334172CF22C09C72006879FB /* PBXTargetDependency */,
+				334172D122C09C72006879FB /* PBXTargetDependency */,
 				334172A322BFC516006879FB /* PBXTargetDependency */,
 			);
 			name = FBXLoader;
@@ -274,12 +261,12 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 3341729922BFC3EF006879FB /* Products */;
-					ProjectRef = 3341729822BFC3EF006879FB /* Bullet3Collision.xcodeproj */;
+					ProductGroup = 334172C322C09C66006879FB /* Products */;
+					ProjectRef = 334172C222C09C66006879FB /* BulletCollision.xcodeproj */;
 				},
 				{
-					ProductGroup = 3341728D22BFC3EF006879FB /* Products */;
-					ProjectRef = 3341728C22BFC3EF006879FB /* Bullet3Dynamics.xcodeproj */;
+					ProductGroup = 334172C922C09C66006879FB /* Products */;
+					ProjectRef = 334172C822C09C66006879FB /* BulletDynamics.xcodeproj */;
 				},
 				{
 					ProductGroup = 3341729322BFC3EF006879FB /* Products */;
@@ -294,13 +281,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		3341729122BFC3EF006879FB /* libBullet3Dynamics_xcode4_x64_debug.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBullet3Dynamics_xcode4_x64_debug.a;
-			remoteRef = 3341729022BFC3EF006879FB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		3341729722BFC3EF006879FB /* libLinearMath_xcode4_x64_debug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -308,11 +288,18 @@
 			remoteRef = 3341729622BFC3EF006879FB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3341729D22BFC3EF006879FB /* libBullet3Collision_xcode4_x64_debug.a */ = {
+		334172C722C09C66006879FB /* libBulletCollision_xcode4_x64_debug.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libBullet3Collision_xcode4_x64_debug.a;
-			remoteRef = 3341729C22BFC3EF006879FB /* PBXContainerItemProxy */;
+			path = libBulletCollision_xcode4_x64_debug.a;
+			remoteRef = 334172C622C09C66006879FB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		334172CD22C09C67006879FB /* libBulletDynamics_xcode4_x64_debug.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBulletDynamics_xcode4_x64_debug.a;
+			remoteRef = 334172CC22C09C67006879FB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -322,6 +309,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				338DCA3422D2F2FB0024A60D /* Renderer.cpp in Sources */,
 				33BE45A422AF9E8100AB7A78 /* FBXModel.cpp in Sources */,
 				33BE457422ACF5BE00AB7A78 /* main.cpp in Sources */,
 				33BE45C422AFBE4000AB7A78 /* glad.c in Sources */,
@@ -331,20 +319,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		3341729F22BFC516006879FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Bullet3Collision;
-			targetProxy = 3341729E22BFC516006879FB /* PBXContainerItemProxy */;
-		};
-		334172A122BFC516006879FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Bullet3Dynamics;
-			targetProxy = 334172A022BFC516006879FB /* PBXContainerItemProxy */;
-		};
 		334172A322BFC516006879FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LinearMath;
 			targetProxy = 334172A222BFC516006879FB /* PBXContainerItemProxy */;
+		};
+		334172CF22C09C72006879FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BulletCollision;
+			targetProxy = 334172CE22C09C72006879FB /* PBXContainerItemProxy */;
+		};
+		334172D122C09C72006879FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BulletDynamics;
+			targetProxy = 334172D022C09C72006879FB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -471,7 +459,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"'/Applications/Autodesk/FBX SDK/2019.2/lib/clang/debug'",
-					"'/Applications/Autodesk/FBX SDK/2019.2/lib/clang/release'",
 					/usr/local/Cellar/glfw/3.3/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -489,7 +476,6 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"'/Applications/Autodesk/FBX SDK/2019.2/lib/clang/debug'",
-					"'/Applications/Autodesk/FBX SDK/2019.2/lib/clang/release'",
 					/usr/local/Cellar/glfw/3.3/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
